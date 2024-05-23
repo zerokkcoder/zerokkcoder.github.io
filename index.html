@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人博客</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #121212;
+            color: #d1d1d1;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background: #1a1a1a;
+            color: #fff;
+            padding: 1rem 0;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background: #1a1a1a;
+        }
+        nav a {
+            color: #d1d1d1;
+            padding: 1rem;
+            text-decoration: none;
+        }
+        nav a:hover {
+            background: #333;
+        }
+        .container {
+            flex: 1;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1rem;
+        }
+        footer {
+            background: #1a1a1a;
+            color: #d1d1d1;
+            text-align: center;
+            padding: 1rem 0;
+        }
+        h1, h2, h3 {
+            color: #d1d1d1;
+        }
+        a {
+            color: #1e90ff;
+        }
+        a:hover {
+            color: #63a4ff;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>个人博客</h1>
+        <p>欢迎来到我的个人博客！</p>
+    </header>
+    <nav>
+        <a href="#home">主页</a>
+        <a href="#about">关于我</a>
+        <a href="#blog">博客</a>
+    </nav>
+    <div class="container">
+        <section id="home">
+            <h2>主页</h2>
+            <p>你好，我是[你的姓名]，这是我的个人博客。</p>
+        </section>
+        <section id="about">
+            <h2>关于我</h2>
+            <p>[你的个人简介]</p>
+            <p>GitHub: <a href="https://github.com/[你的用户名]" target="_blank">[你的用户名]</a></p>
+            <p>联系我: <a href="mailto:[你的邮箱]">[你的邮箱]</a></p>
+        </section>
+        <section id="blog">
+            <h2>博客</h2>
+            <ul>
+                <li><a href="/blog/post1.md" target="_blank">文章标题1</a></li>
+                <li><a href="/blog/post2.md" target="_blank">文章标题2</a></li>
+                <!-- 更多文章链接 -->
+            </ul>
+        </section>
+    </div>
+    <footer>
+        <p>&copy; 2024 [你的姓名] - 版权所有</p>
+    </footer>
+</body>
+</html>
