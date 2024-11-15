@@ -1,246 +1,317 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hexo</title>
-<link rel="stylesheet" href="/css/style.css">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
 
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/monokai.min.css">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-<!-- 使用 Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<meta name="generator" content="Hexo 7.3.0"></head>
-<body>
-    <div class="container">
-        <header class="header">
-    <div class="header-inner">
-        <!-- 网站标题/Logo -->
-        <div class="site-brand">
-            <a href="/" class="brand">
-                
-                    Hexo
-                
-            </a>
-            
-        </div>
+<link rel="stylesheet" href="/css/main.css">
 
-        <!-- 导航菜单 -->
-        <nav class="site-nav">
-            <ul class="menu">
-                
-                    <li class="menu-item">
-                        <a href="/" 
-                           class="">
-                            首页
-                        </a>
-                    </li>
-                
-                    <li class="menu-item">
-                        <a href="/archives" 
-                           class="active">
-                            归档
-                        </a>
-                    </li>
-                
-                    <li class="menu-item">
-                        <a href="/categories" 
-                           class="">
-                            分类
-                        </a>
-                    </li>
-                
-                    <li class="menu-item">
-                        <a href="/tags" 
-                           class="">
-                            标签
-                        </a>
-                    </li>
-                
-                    <li class="menu-item">
-                        <a href="/about" 
-                           class="">
-                            关于
-                        </a>
-                    </li>
-                
-            </ul>
-        </nav>
 
-        <!-- 移动端菜单按钮 -->
-        <div class="menu-toggle">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.21.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/archives/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/archives/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"en","comments":"","permalink":"","path":"archives/index.html","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Archive | Hexo</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
-</header>
-        <main class="main">
-            <div class="archive-container">
-    <div class="archive-header">
-        <h1 class="archive-title">
-            
-                归档
-            
-        </h1>
-        <div class="archive-counter">
-            共计 5 篇文章
-        </div>
-    </div>
+  </div>
 
-    <div class="archive-content">
-        
-        
-            
-            
-            
-                
-                
-                <div class="archive-year">
-                    <div class="archive-year-title">2024</div>
-                    <div class="archive-year-posts">
-            
-            
-            <article class="archive-item">
-                <div class="archive-item-date">
-                    11-15
-                </div>
-                <div class="archive-item-title">
-                    <a href="/2024/11/15/hello-world%20copy%204/">Hello World</a>
-                    
-                </div>
-            </article>
-            
-            
-        
-            
-            
-            
-            
-            <article class="archive-item">
-                <div class="archive-item-date">
-                    11-15
-                </div>
-                <div class="archive-item-title">
-                    <a href="/2024/11/15/hello-world%20copy%203/">Hello World</a>
-                    
-                </div>
-            </article>
-            
-            
-        
-            
-            
-            
-            
-            <article class="archive-item">
-                <div class="archive-item-date">
-                    11-15
-                </div>
-                <div class="archive-item-title">
-                    <a href="/2024/11/15/hello-world%20copy%202/">Hello World</a>
-                    
-                </div>
-            </article>
-            
-            
-        
-            
-            
-            
-            
-            <article class="archive-item">
-                <div class="archive-item-date">
-                    11-15
-                </div>
-                <div class="archive-item-title">
-                    <a href="/2024/11/15/hello-world%20copy/">Hello World</a>
-                    
-                </div>
-            </article>
-            
-            
-        
-            
-            
-            
-            
-            <article class="archive-item">
-                <div class="archive-item-date">
-                    11-15
-                </div>
-                <div class="archive-item-title">
-                    <a href="/2024/11/15/hello-world/">Hello World</a>
-                    
-                </div>
-            </article>
-            
-            
-        
-        
-        
-            </div></div> <!-- 结束最后一年的文章组 -->
-        
-    </div>
+  <div class="site-meta">
 
-    <!-- 分页 -->
-    
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Hexo</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
 </div>
-        </main>
-        <footer class="footer">
-    <div class="footer-inner">
-        <div class="footer-content">
-            <div class="footer-section">
-                <div class="copyright">
-                    <!-- 版权信息 -->
-                    <span>&copy; 2024 John Doe</span>
-                    <span class="separator">|</span>
-                    <span>Powered by <a href="https://hexo.io" target="_blank">Hexo</a></span>
-                    <span class="separator">|</span>
-                    <span>Theme <a href="https://github.com/your-username/hexo-theme-code-simple" target="_blank">CodeSimple</a></span>
-                </div>
-            </div>
 
-            <!-- 社交链接 -->
-            <div class="footer-section">
-                <div class="social-links">
-                    
-                    
-                    
-                </div>
-            </div>
 
-            <!-- 站点统计 -->
-            
-            <div class="footer-section">
-                <div class="site-stats">
-                    <span class="site-stat-item">
-                        文章 5
-                    </span>
-                    <span class="separator">|</span>
-                    <span class="site-stat-item">
-                        分类 0
-                    </span>
-                    <span class="separator">|</span>
-                    <span class="site-stat-item">
-                        标签 0
-                    </span>
-                </div>
-            </div>
-            
 
-            <!-- ICP备案信息 -->
-            
-            <div class="footer-section">
-                <div class="icp">
-                    <a href="https://beian.miit.gov.cn/" target="_blank">@ddddddddd</a>
-                </div>
-            </div>
-            
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-schedule"><a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>Schedule</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
         </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
     </div>
-</footer>
+
+    
+  </aside>
+
+
     </div>
-    <script src="/js/main.js"></script>
+
+    <div class="main-inner archive posts-collapse">
+
+
+  
+  
+  
+  <div class="post-block">
+    <div class="post-content">
+      <div class="collection-title">
+        <span class="collection-header">Um..! 5 posts in total. Keep on posting.</span>
+      </div>
+
+      
+    <div class="collection-year">
+      <span class="collection-header">2024<span class="collection-year-count">5</span></span>
+    </div>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <div class="post-meta-container">
+        <time itemprop="dateCreated"
+              datetime="2024-11-15T15:55:30+08:00"
+              content="2024-11-15">
+          11-15
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2024/11/15/hello-world%20copy%204/" itemprop="url">
+            <span itemprop="name">Hello World</span>
+          </a>
+      </div>
+
+      
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <div class="post-meta-container">
+        <time itemprop="dateCreated"
+              datetime="2024-11-15T15:55:29+08:00"
+              content="2024-11-15">
+          11-15
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2024/11/15/hello-world%20copy%203/" itemprop="url">
+            <span itemprop="name">Hello World</span>
+          </a>
+      </div>
+
+      
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <div class="post-meta-container">
+        <time itemprop="dateCreated"
+              datetime="2024-11-15T15:55:28+08:00"
+              content="2024-11-15">
+          11-15
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2024/11/15/hello-world%20copy%202/" itemprop="url">
+            <span itemprop="name">Hello World</span>
+          </a>
+      </div>
+
+      
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <div class="post-meta-container">
+        <time itemprop="dateCreated"
+              datetime="2024-11-15T15:55:27+08:00"
+              content="2024-11-15">
+          11-15
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2024/11/15/hello-world%20copy/" itemprop="url">
+            <span itemprop="name">Hello World</span>
+          </a>
+      </div>
+
+      
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <div class="post-meta-container">
+        <time itemprop="dateCreated"
+              datetime="2024-11-15T15:18:27+08:00"
+              content="2024-11-15">
+          11-15
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2024/11/15/hello-world/" itemprop="url">
+            <span itemprop="name">Hello World</span>
+          </a>
+      </div>
+
+      
+    </header>
+  </article>
+
+
+    </div>
+  </div>
+  
+  
+  
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">John Doe</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
 </body>
 </html>
