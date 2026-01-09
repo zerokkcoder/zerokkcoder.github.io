@@ -1,0 +1,33 @@
+{
+    "site_name": "注释糊弄学大师",
+    "site_slogan": "注释两行字，后人少掉发",
+    "start_time": "2026年01月09日",
+    "accounts": [
+        {
+            "name": "Github",
+            "site_logo": "https://github.githubassets.com/favicons/favicon.png",
+            "site_url": "https://github.com/zerokkcoder"
+        },
+        {
+            "name": "X",
+            "site_logo": "https://abs.twimg.com/favicons/twitter.3.ico",
+            "site_url": "https://x.com/huanggz0315"
+        }
+    ],
+    "projects": [
+        {
+            "name": "好课网",
+            "site_url": "https://xuehaoke.top",
+            "desc": "学好课，卷王必备的资源平台"
+        }
+    ],
+    "labels": [
+        { "name": "技术", "value": "Technical" },
+        { "name": "生活", "value": "Life" },
+        { "name": "随笔", "value": "Essay" }
+    ],
+    "username": "zerokkcoder",
+    "repo_name": "zerokkcoder.github.io",
+    "per_page": 10,
+    "cache_ttl": 3600000
+}
