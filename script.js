@@ -110,7 +110,17 @@ async function renderHeader(config) {
     // 设置站点标题
     const siteTitleEl = document.getElementById('site-title');
     if (siteTitleEl && config.site_name) {
-        siteTitleEl.innerHTML = `<a href="index.html">${config.site_name}</a>`;
+        if (config.site_logo) {
+            siteTitleEl.innerHTML = `
+                <a href="index.html" class="site-branding">
+                    <img src="${config.site_logo}" alt="${config.site_name}" class="site-logo">
+                    <span>${config.site_name}</span>
+                </a>
+            `;
+        } else {
+            siteTitleEl.innerHTML = `<a href="index.html">${config.site_name}</a>`;
+        }
+
         // 动态设置页面 Title
         if (!document.getElementById('post-detail')) {
             document.title = config.site_name;
