@@ -110,7 +110,10 @@ async function renderHeader(config) {
     const siteTitleEl = document.getElementById('site-title');
     if (siteTitleEl && config.site_name) {
         siteTitleEl.innerHTML = `<a href="index.html">${config.site_name}</a>`;
-        document.title = config.site_name;
+        // 动态设置页面 Title
+        if (!document.getElementById('post-detail')) {
+            document.title = config.site_name;
+        }
     }
 
     // 设置 Slogan
