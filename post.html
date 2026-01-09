@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文章详情 - 我的博客</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- 引入 GitHub Markdown 样式 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css">
+    <style>
+        /* 针对 github-markdown-css 的微调 */
+        .markdown-body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+        }
+        @media (max-width: 767px) {
+            .markdown-body {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><a href="index.html">我的博客</a></h1>
+            <nav class="nav">
+                <a href="index.html">首页</a>
+                <a href="https://github.com/zerokkcoder/zerokkcoder.github.io/issues" target="_blank">Issues</a>
+            </nav>
+        </header>
+        
+        <main>
+            <div id="post-detail" class="post-content">
+                <!-- 文章详情将通过 JavaScript 渲染到这里 -->
+            </div>
+        </main>
+    </div>
+
+    <!-- 引入 Marked.js 用于解析 Markdown -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+/* 全局样式 */
+:root {
+    --primary-color: #0366d6;
+    --text-color: #24292e;
+    --bg-color: #f6f8fa;
+    --card-bg: #ffffff;
+    --border-color: #e1e4e8;
+    --meta-color: #586069;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* 头部样式 */
+header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-top: 20px;
+}
+
+header h1 {
+    margin: 0;
+}
+
+header h1 a {
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+.nav {
+    margin-top: 10px;
+}
+
+.nav a {
+    color: var(--primary-color);
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.nav a:hover {
+    text-decoration: underline;
+}
+
+/* 列表页样式 */
+.post-list {
+    list-style: none;
+    padding: 0;
+}
+
+.post-item {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: box-shadow 0.2s;
+}
+
+.post-item:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.post-title {
+    margin: 0 0 10px 0;
+    font-size: 1.5em;
+}
+
+.post-title a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.post-meta {
+    font-size: 0.85em;
+    color: var(--meta-color);
+}
+
+/* 详情页样式 */
+.post-content {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 40px;
+}
+
+.post-header {
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 20px;
+}
+
+/* Markdown 内容样式调整 */
+.markdown-body img {
+    max-width: 100%;
+    box-sizing: content-box;
+    background-color: #fff;
+}
+
+.loading, .error {
+    text-align: center;
+    padding: 40px;
+    color: var(--meta-color);
+}
+
+.error {
+    color: #cb2431;
+}
