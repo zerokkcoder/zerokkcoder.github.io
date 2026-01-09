@@ -42,10 +42,13 @@ async function fetchAllIssues() {
             const response = await fetch(url, { headers });
             
             if (!response.ok) {
+                console.error(`API 请求失败: ${response.status} ${response.statusText}`);
+                console.error(`Response Body: ${await response.text()}`);
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
             const data = await response.json();
+            console.log(`第 ${page} 页获取到 ${data.length} 条数据`);
             
             if (data.length === 0) {
                 hasNextPage = false;

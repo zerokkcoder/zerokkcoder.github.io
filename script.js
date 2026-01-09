@@ -62,7 +62,8 @@ async function fetchWithCache(url) {
  */
 async function initDbData() {
     try {
-        const response = await fetch('db.json');
+        // 添加时间戳防止缓存
+        const response = await fetch(`db.json?t=${Date.now()}`);
         if (response.ok) {
             DB_DATA = await response.json();
             console.log('已加载本地 db.json 数据');
