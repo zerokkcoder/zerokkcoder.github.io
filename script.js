@@ -308,20 +308,17 @@ async function renderPostList() {
         }
 
         const html = posts.map(post => {
-            const summary = getSummary(post.body);
             return `
             <li class="post-item">
-                <h2 class="post-title">
-                    <a href="post.html?id=${post.number}">${post.title}</a>
-                </h2>
-                <div class="post-meta">
-                    <span>${formatDate(post.created_at)}</span>
-                    ${post.labels.length > 0 ? post.labels.map(l => `<span>${l.name}</span>`).join('') : ''}
+                <div class="post-header-flex">
+                    <h2 class="post-title">
+                        <a href="post.html?id=${post.number}">${post.title}</a>
+                    </h2>
+                    <div class="post-meta">
+                        ${post.labels.length > 0 ? post.labels.map(l => `<span class="post-tag">#${l.name}</span>`).join('') : ''}
+                        <span>${formatDate(post.created_at)}</span>
+                    </div>
                 </div>
-                <div class="post-summary">
-                    ${summary}
-                </div>
-                <a href="post.html?id=${post.number}" class="read-more">阅读全文</a>
             </li>
         `}).join('');
 
@@ -365,7 +362,7 @@ async function renderPostDetail() {
                 <h1>${post.title}</h1>
                 <div class="post-meta">
                     <span>发布于 ${formatDate(post.created_at)}</span>
-                    <span><a href="${post.html_url}" target="_blank" style="color: inherit; text-decoration: none;">在 GitHub 上查看</a></span>
+                    <span><a href="${post.html_url}" target="_blank" style="color: inherit; text-decoration: none;">${post.user.login}</a></span>
                 </div>
             </div>
             <div class="markdown-body">

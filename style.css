@@ -198,13 +198,12 @@ a {
 .main-content {
     flex: 1;
     margin-left: var(--sidebar-width);
-    padding: 4rem 6rem;
-    max-width: 1200px;
+    padding: 2rem;
 }
 
 /* Hero Section */
 .hero-section {
-    margin-bottom: 5rem;
+    margin-bottom: 1rem;
     position: relative;
 }
 
@@ -228,7 +227,7 @@ a {
 }
 
 .post-item {
-    padding: 3rem 0;
+    padding: 0.5rem 0;
     border-bottom: 1px solid var(--border);
     transition: var(--transition-fast);
 }
@@ -241,13 +240,21 @@ a {
     background: transparent;
 }
 
+.post-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 2rem;
+}
+
 .post-meta {
     display: flex;
+    align-items: center;
     gap: 1rem;
-    margin-bottom: 0.75rem;
     font-family: var(--font-mono);
     font-size: 0.875rem;
     color: var(--muted-foreground);
+    flex-shrink: 0;
 }
 
 .post-tag {
@@ -255,47 +262,25 @@ a {
 }
 
 .post-title {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    line-height: 1.3;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.4;
+    flex: 1;
 }
 
 .post-title a {
-    background: linear-gradient(to right, #ffffff, #a1a1aa);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    transition: opacity 0.2s;
+    color: var(--foreground);
+    transition: color 0.2s;
 }
 
 .post-title a:hover {
-    opacity: 0.8;
-}
-
-.post-summary {
-    font-size: 1.125rem;
-    color: #a1a1aa;
-    margin-bottom: 1.5rem;
-    line-height: 1.7;
-    max-width: 65ch;
-}
-
-.read-more {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.875rem;
-    font-weight: 500;
     color: var(--accent);
-}
-
-.read-more:hover {
-    text-decoration: underline;
 }
 
 /* Post Detail */
 .post-content {
-    max-width: var(--content-max-width);
+    max-width: 100%;
 }
 
 /* Mobile Responsiveness */
@@ -353,5 +338,16 @@ a {
     
     .post-title {
         font-size: 1.5rem;
+    }
+
+    .post-header-flex {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .post-meta {
+        font-size: 0.75rem;
+        width: 100%;
     }
 }
