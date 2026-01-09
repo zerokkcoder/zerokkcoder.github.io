@@ -30,12 +30,16 @@ async function fetchAllIssues() {
     
     if (process.env.GITHUB_TOKEN) {
         headers['Authorization'] = `token ${process.env.GITHUB_TOKEN}`;
+        console.log('已加载 GITHUB_TOKEN');
+    } else {
+        console.warn('未检测到 GITHUB_TOKEN，将使用匿名请求（速率限制较低）');
     }
 
     while (hasNextPage) {
         try {
-            console.log(`正在获取第 ${page} 页...`);
-            const response = await fetch(`${API_URL}?page=${page}&per_page=100&state=open`, { headers });
+            const url = `${API_URL}?page=${page}&per_page=100&state=open`;
+            console.log(`正在获取第 ${page} 页: ${url}`);
+            const response = await fetch(url, { headers });
             
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
