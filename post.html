@@ -23,16 +23,28 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1><a href="index.html">我的博客</a></h1>
-            <nav class="nav">
-                <a href="index.html">首页</a>
-                <a href="https://github.com/zerokkcoder/zerokkcoder.github.io/issues" target="_blank">Issues</a>
-            </nav>
-        </header>
+    <div class="layout-wrapper">
+        <aside class="sidebar">
+            <div class="sidebar-inner">
+                <div class="sidebar-header">
+                    <h1 id="site-title"><a href="index.html"></a></h1>
+                    <p id="site-slogan" class="site-slogan"></p>
+                </div>
+                
+                <nav id="nav" class="nav">
+                    <a href="index.html">首页</a>
+                </nav>
+
+                <footer id="site-footer" class="sidebar-footer">
+                    <!-- 社交账号和项目展示将通过 JavaScript 渲染到这里 -->
+                </footer>
+            </div>
+        </aside>
         
-        <main>
+        <main class="main-content">
+            <div id="hero-section" class="hero-section">
+                <!-- Hero Image 将通过 JS 渲染 -->
+            </div>
             <div id="post-detail" class="post-content">
                 <!-- 文章详情将通过 JavaScript 渲染到这里 -->
             </div>

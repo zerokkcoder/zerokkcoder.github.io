@@ -1,119 +1,357 @@
-/* 全局样式 */
+/* 
+ * Minimalist Dark Theme with Sidebar Layout
+ * A refined, content-focused theme for developer blogs
+ */
+
 :root {
-    --primary-color: #0366d6;
-    --text-color: #24292e;
-    --bg-color: #f6f8fa;
-    --card-bg: #ffffff;
-    --border-color: #e1e4e8;
-    --meta-color: #586069;
+    /* Colors */
+    --background: #0f0f11;
+    --sidebar-bg: #09090b;
+    --foreground: #e4e4e7;
+    --muted-foreground: #a1a1aa;
+    --border: #27272a;
+    --accent: #f59e0b;
+    --accent-muted: rgba(245, 158, 11, 0.15);
+    
+    /* Layout */
+    --sidebar-width: 280px;
+    --content-max-width: 800px;
+    
+    /* Typography */
+    --font-sans: 'Inter', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-display: 'Space Grotesk', sans-serif;
+    
+    /* Effects */
+    --glow-sm: 0 0 20px rgba(245, 158, 11, 0.1);
+    --glow-md: 0 0 40px rgba(245, 158, 11, 0.15);
+    
+    /* Misc */
+    --radius-sm: 0.375rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+    --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reset & Base */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
     line-height: 1.6;
-    color: var(--text-color);
-    background-color: var(--bg-color);
-    margin: 0;
-    padding: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-/* 头部样式 */
-header {
-    text-align: center;
-    margin-bottom: 40px;
-    padding-top: 20px;
-}
-
-header h1 {
-    margin: 0;
-}
-
-header h1 a {
+a {
+    color: inherit;
     text-decoration: none;
-    color: var(--text-color);
+    transition: var(--transition-fast);
 }
 
+/* Layout System */
+.layout-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: var(--sidebar-width);
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: var(--sidebar-bg);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-inner {
+    padding: 2.5rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header {
+    margin-bottom: 3rem;
+}
+
+#site-title {
+    margin-bottom: 0.75rem;
+    line-height: 1.1;
+}
+
+#site-title a {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--foreground);
+    letter-spacing: -0.02em;
+}
+
+.site-slogan {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+    line-height: 1.5;
+}
+
+/* Navigation */
 .nav {
-    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1; /* Pushes footer down */
 }
 
 .nav a {
-    color: var(--primary-color);
-    text-decoration: none;
-    margin: 0 10px;
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    margin: 0 -1rem;
+    border-radius: var(--radius-md);
+    color: var(--muted-foreground);
+    font-size: 0.9375rem;
+    font-weight: 500;
 }
 
 .nav a:hover {
-    text-decoration: underline;
+    color: var(--foreground);
+    background: rgba(255, 255, 255, 0.05);
 }
 
-/* 列表页样式 */
+.nav a.active {
+    color: var(--accent);
+    background: var(--accent-muted);
+}
+
+/* Sidebar Footer */
+.sidebar-footer {
+    margin-top: 3rem;
+    border-top: 1px solid var(--border);
+    padding-top: 2rem;
+}
+
+.footer-section {
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    margin-bottom: 1rem;
+    opacity: 0.7;
+}
+
+.project-list, .account-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.account-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+}
+
+.account-link img {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    filter: grayscale(1);
+    transition: var(--transition-fast);
+}
+
+.account-link:hover {
+    color: var(--foreground);
+}
+
+.account-link:hover img {
+    filter: grayscale(0);
+}
+
+.copyright {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: #52525b;
+    margin-top: 2rem;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    padding: 4rem 6rem;
+    max-width: 1200px;
+}
+
+/* Hero Section */
+.hero-section {
+    margin-bottom: 5rem;
+    position: relative;
+}
+
+.hero-image {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border);
+    opacity: 0.9;
+    mask-image: linear-gradient(to bottom, black 20%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 20%, transparent 100%);
+}
+
+/* Post List */
 .post-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
     list-style: none;
-    padding: 0;
 }
 
 .post-item {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    padding: 20px;
-    margin-bottom: 20px;
-    transition: box-shadow 0.2s;
+    padding: 3rem 0;
+    border-bottom: 1px solid var(--border);
+    transition: var(--transition-fast);
+}
+
+.post-item:first-child {
+    padding-top: 0;
 }
 
 .post-item:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-}
-
-.post-title {
-    margin: 0 0 10px 0;
-    font-size: 1.5em;
-}
-
-.post-title a {
-    color: var(--primary-color);
-    text-decoration: none;
+    background: transparent;
 }
 
 .post-meta {
-    font-size: 0.85em;
-    color: var(--meta-color);
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
 }
 
-/* 详情页样式 */
+.post-tag {
+    color: var(--accent);
+}
+
+.post-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+}
+
+.post-title a {
+    background: linear-gradient(to right, #ffffff, #a1a1aa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: opacity 0.2s;
+}
+
+.post-title a:hover {
+    opacity: 0.8;
+}
+
+.post-summary {
+    font-size: 1.125rem;
+    color: #a1a1aa;
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+    max-width: 65ch;
+}
+
+.read-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--accent);
+}
+
+.read-more:hover {
+    text-decoration: underline;
+}
+
+/* Post Detail */
 .post-content {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    padding: 40px;
+    max-width: var(--content-max-width);
 }
 
-.post-header {
-    margin-bottom: 30px;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 20px;
+/* Mobile Responsiveness */
+@media (max-width: 1024px) {
+    .main-content {
+        padding: 3rem;
+    }
 }
 
-/* Markdown 内容样式调整 */
-.markdown-body img {
-    max-width: 100%;
-    box-sizing: content-box;
-    background-color: #fff;
-}
+@media (max-width: 768px) {
+    .layout-wrapper {
+        flex-direction: column;
+    }
 
-.loading, .error {
-    text-align: center;
-    padding: 40px;
-    color: var(--meta-color);
-}
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        overflow-y: visible;
+    }
 
-.error {
-    color: #cb2431;
+    .sidebar-inner {
+        padding: 2rem;
+    }
+
+    .sidebar-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .nav a {
+        margin: 0;
+        padding: 0.5rem 1rem;
+        background: rgba(255, 255, 255, 0.03);
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 2rem;
+    }
+    
+    .hero-image {
+        height: 200px;
+    }
+    
+    .post-title {
+        font-size: 1.5rem;
+    }
 }

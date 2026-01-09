@@ -122,6 +122,20 @@ async function renderHeader(config) {
         siteSloganEl.textContent = config.site_slogan;
     }
 
+    // 设置 Hero Image (如果存在)
+    const heroSection = document.getElementById('hero-section');
+    if (heroSection && config.hero_image) {
+        // 创建或更新 Hero Image
+        let heroImg = heroSection.querySelector('.hero-image');
+        if (!heroImg) {
+            heroImg = document.createElement('img');
+            heroImg.className = 'hero-image';
+            heroSection.insertBefore(heroImg, heroSection.firstChild);
+        }
+        heroImg.src = config.hero_image;
+        heroImg.alt = "Hero Image";
+    }
+
     // 渲染导航栏标签
     const navEl = document.getElementById('nav');
     if (navEl && config.labels) {
@@ -134,6 +148,87 @@ async function renderHeader(config) {
 
         navEl.innerHTML = homeLink + labelsHtml;
     }
+}
+
+/**
+ * 渲染页脚 (社交账号和项目)
+ */
+function renderFooter(config) {
+    const footerEl = document.getElementById('site-footer');
+    if (!footerEl || !config) return;
+
+    let html = '';
+
+    // 渲染项目
+    if (config.projects && config.projects.length > 0) {
+        const projectsHtml = config.projects.map(project => `
+            <a href="${project.site_url}" target="_blank" class="project-card">
+                <div class="project-icon"></div>
+                <div class="project-info">
+                    <h4>${project.name}</h4>
+                    <p>${project.desc}</p>
+                </div>
+                <div class="project-arrow">→</div>
+            </a>
+        `).join('');
+
+        html += `
+            <div class="footer-section">
+                <h3 class="section-title">Projects</h3>
+                <div class="project-list">${projectsHtml}</div>
+            </div>
+        `;
+    }
+
+    // 渲染社交账号
+    if (config.accounts && config.accounts.length > 0) {
+        const accountsHtml = config.accounts.map(account => `
+            <a href="${account.site_url}" target="_blank" class="account-link" title="${account.name}">
+                <img src="${account.site_logo}" alt="${account.name}" onerror="this.src='https://github.githubassets.com/favicons/favicon.png'">
+                <span>${account.name}</span>
+            </a>
+        `).join('');
+        
+        html += `
+            <div class="footer-section">
+                <h3 class="section-title">Connect</h3>
+                <div class="account-list">${accountsHtml}</div>
+            </div>
+        `;
+    }
+    
+    // 版权信息
+    html += `
+        <div class="copyright">
+            <span class="status-indicator"></span>
+            SYSTEM ONLINE • © ${new Date().getFullYear()} ${config.username || 'My Blog'}
+        </div>
+    `;
+
+    footerEl.innerHTML = html;
+}
+
+/**
+ * 从 Markdown 提取摘要
+ * @param {string} markdown - Markdown 文本
+ * @param {number} length - 摘要长度
+ * @returns {string} 纯文本摘要
+ */
+function getSummary(markdown, length = 150) {
+    if (!markdown) return '';
+    // 移除 Markdown 标记
+    const text = markdown
+        .replace(/!\[.*?\]\(.*?\)/g, '') // 移除图片
+        .replace(/\[(.*?)\]\(.*?\)/g, '$1') // 移除链接
+        .replace(/#{1,6}\s/g, '') // 移除标题符号
+        .replace(/(\*\*|__)(.*?)\1/g, '$2') // 移除粗体
+        .replace(/(\*|_)(.*?)\1/g, '$2') // 移除斜体
+        .replace(/`{3}[\s\S]*?`{3}/g, '') // 移除代码块
+        .replace(/`(.+?)`/g, '$1') // 移除行内代码
+        .replace(/\n/g, ' ') // 换行转空格
+        .trim();
+    
+    return text.length > length ? text.slice(0, length) + '...' : text;
 }
 
 /**
@@ -211,17 +306,23 @@ async function renderPostList() {
             return;
         }
 
-        const html = posts.map(post => `
+        const html = posts.map(post => {
+            const summary = getSummary(post.body);
+            return `
             <li class="post-item">
                 <h2 class="post-title">
                     <a href="post.html?id=${post.number}">${post.title}</a>
                 </h2>
                 <div class="post-meta">
-                    发布于 ${formatDate(post.created_at)}
-                    ${post.labels.length > 0 ? ` • 标签: ${post.labels.map(l => l.name).join(', ')}` : ''}
+                    <span>${formatDate(post.created_at)}</span>
+                    ${post.labels.length > 0 ? post.labels.map(l => `<span>${l.name}</span>`).join('') : ''}
                 </div>
+                <div class="post-summary">
+                    ${summary}
+                </div>
+                <a href="post.html?id=${post.number}" class="read-more">阅读全文</a>
             </li>
-        `).join('');
+        `}).join('');
 
         listContainer.innerHTML = html;
 
@@ -262,8 +363,8 @@ async function renderPostDetail() {
             <div class="post-header">
                 <h1>${post.title}</h1>
                 <div class="post-meta">
-                    发布于 ${formatDate(post.created_at)}
-                    <a href="${post.html_url}" target="_blank" style="margin-left: 10px;">在 GitHub 上查看</a>
+                    <span>发布于 ${formatDate(post.created_at)}</span>
+                    <span><a href="${post.html_url}" target="_blank" style="color: inherit; text-decoration: none;">在 GitHub 上查看</a></span>
                 </div>
             </div>
             <div class="markdown-body">
@@ -283,6 +384,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     await initDbData(); // 尝试加载静态数据
     const config = await initSiteConfig(); // 加载站点配置
     renderHeader(config); // 渲染头部
+    renderFooter(config); // 渲染页脚
 
     // 简单的路由判断
     if (document.getElementById('post-list')) {
