@@ -24,6 +24,8 @@ jobs:
           node-version: '18'
 
       - name: Generate db.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node generate.js
 
       - name: Commit and push changes

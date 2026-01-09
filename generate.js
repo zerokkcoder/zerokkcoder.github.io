@@ -24,10 +24,18 @@ async function fetchAllIssues() {
 
     console.log(`开始获取 ${USERNAME}/${REPO_NAME} 的 Issues...`);
 
+    const headers = {
+        'User-Agent': 'Node.js Script'
+    };
+    
+    if (process.env.GITHUB_TOKEN) {
+        headers['Authorization'] = `token ${process.env.GITHUB_TOKEN}`;
+    }
+
     while (hasNextPage) {
         try {
             console.log(`正在获取第 ${page} 页...`);
-            const response = await fetch(`${API_URL}?page=${page}&per_page=100&state=open`);
+            const response = await fetch(`${API_URL}?page=${page}&per_page=100&state=open`, { headers });
             
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -57,9 +65,30 @@ async function fetchAllIssues() {
 
     console.log(`共获取到 ${allIssues.length} 个 Issue`);
 
+    // 精简数据，只保留必要字段
+    const simplifiedIssues = allIssues.map(issue => ({
+        id: issue.id,
+        number: issue.number,
+        title: issue.title,
+        body: issue.body,
+        created_at: issue.created_at,
+        updated_at: issue.updated_at,
+        html_url: issue.html_url,
+        labels: issue.labels.map(label => ({
+            id: label.id,
+            name: label.name,
+            color: label.color
+        })),
+        user: {
+            login: issue.user.login,
+            avatar_url: issue.user.avatar_url,
+            html_url: issue.user.html_url
+        }
+    }));
+
     // 保存到 db.json
     const dbPath = path.join(__dirname, 'db.json');
-    fs.writeFileSync(dbPath, JSON.stringify(allIssues, null, 2), 'utf8');
+    fs.writeFileSync(dbPath, JSON.stringify(simplifiedIssues, null, 2), 'utf8');
     console.log(`数据已保存到 ${dbPath}`);
 }
 
