@@ -1,13 +1,19 @@
 [
   {
-    "id": 2795665277,
+    "id": 3795665277,
     "number": 1,
     "title": "测试",
     "body": "测试",
     "created_at": "2026-01-09T06:26:29Z",
-    "updated_at": "2026-01-09T06:52:55Z",
+    "updated_at": "2026-01-09T07:22:11Z",
     "html_url": "https://github.com/zerokkcoder/zerokkcoder.github.io/issues/1",
-    "labels": [],
+    "labels": [
+      {
+        "id": 9961734349,
+        "name": "技术",
+        "color": "aaaaaa"
+      }
+    ],
     "user": {
       "login": "zerokkcoder",
       "avatar_url": "https://avatars.githubusercontent.com/u/9574282?v=4",
