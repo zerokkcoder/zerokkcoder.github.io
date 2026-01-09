@@ -5,9 +5,15 @@
     "title": "测试3",
     "body": "测试3",
     "created_at": "2026-01-09T08:38:09Z",
-    "updated_at": "2026-01-09T08:38:09Z",
+    "updated_at": "2026-01-09T08:38:23Z",
     "html_url": "https://github.com/zerokkcoder/zerokkcoder.github.io/issues/3",
-    "labels": [],
+    "labels": [
+      {
+        "id": 9962088299,
+        "name": "生活",
+        "color": "aaaaaa"
+      }
+    ],
     "user": {
       "login": "zerokkcoder",
       "avatar_url": "https://avatars.githubusercontent.com/u/9574282?v=4",
