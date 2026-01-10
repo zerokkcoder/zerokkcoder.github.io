@@ -362,22 +362,127 @@ async function getIssue(number) {
 }
 
 /**
- * 渲染文章列表
+ * 切换分页
+ * @param {number} page - 目标页码
  */
-async function renderPostList() {
+window.changePage = function(page) {
+    renderPostList(page);
+    // 滚动到顶部
+    const postList = document.getElementById('post-list');
+    if (postList) {
+        postList.scrollIntoView({ behavior: 'smooth' });
+    }
+};
+
+/**
+ * 渲染分页控件
+ * @param {number} currentPage - 当前页码
+ * @param {number} totalPages - 总页数 (如果未知则为 -1)
+ * @param {boolean} hasMore - 是否有更多数据 (API 模式下使用)
+ */
+function renderPagination(currentPage, totalPages, hasMore) {
+    const listContainer = document.getElementById('post-list');
+    if (!listContainer) return;
+    
+    // 移除已有的分页控件
+    const existingPagination = document.querySelector('.pagination');
+    if (existingPagination) existingPagination.remove();
+
+    // 如果只有一页且明确知道总页数，或者API模式下第一页且无更多数据，则不显示分页
+    if (totalPages === 1 || (totalPages === -1 && !hasMore && currentPage === 1)) return;
+    // 如果没有数据，也不显示
+    if (totalPages === 0) return;
+
+    const paginationEl = document.createElement('div');
+    paginationEl.className = 'pagination';
+
+    const prevDisabled = currentPage <= 1 ? 'disabled' : '';
+    // 如果知道总页数，则当前页>=总页数时禁用下一页
+    // 如果不知道总页数(API)，则如果没有更多数据时禁用下一页
+    const nextDisabled = (totalPages !== -1 && currentPage >= totalPages) || (totalPages === -1 && !hasMore) ? 'disabled' : '';
+
+    let infoText = `第 ${currentPage} 页`;
+    if (totalPages !== -1) {
+        infoText += ` / 共 ${totalPages} 页`;
+    }
+
+    paginationEl.innerHTML = `
+        <button class="pagination-btn ${prevDisabled}" onclick="changePage(${currentPage - 1})">
+            &larr; 上一页
+        </button>
+        <div class="pagination-info">
+            ${infoText}
+        </div>
+        <button class="pagination-btn ${nextDisabled}" onclick="changePage(${currentPage + 1})">
+            下一页 &rarr;
+        </button>
+    `;
+
+    // 插入到列表容器之后
+    listContainer.parentNode.insertBefore(paginationEl, listContainer.nextSibling);
+}
+
+/**
+ * 渲染文章列表
+ * @param {number} page - 页码
+ */
+async function renderPostList(page = 1) {
     const listContainer = document.getElementById('post-list');
     if (!listContainer) return;
 
     listContainer.innerHTML = '<div class="loading">加载中...</div>';
+    
+    // 移除旧的分页控件，避免加载时显示旧的
+    const existingPagination = document.querySelector('.pagination');
+    if (existingPagination) existingPagination.remove();
 
     // 获取 URL 参数中的 label
     const urlParams = new URLSearchParams(window.location.search);
     const labelFilter = urlParams.get('label');
 
     try {
-        // 获取 Issues，过滤掉 Pull Requests
-        const data = await getIssues(1, labelFilter);
-        let posts = data.filter(issue => !issue.pull_request);
+        let posts = [];
+        let totalPages = -1;
+        let hasMore = false;
+
+        if (DB_DATA) {
+            // 本地数据模式：支持精确分页
+            let filtered = DB_DATA;
+            
+            // 1. 标签过滤
+            if (labelFilter) {
+                filtered = filtered.filter(issue => issue.labels.some(l => l.name === labelFilter));
+            }
+            
+            // 2. 排除 Pull Requests
+            filtered = filtered.filter(issue => !issue.pull_request);
+            
+            // 3. 计算分页
+            const totalCount = filtered.length;
+            totalPages = Math.ceil(totalCount / CONFIG.PER_PAGE);
+            
+            // 修正 page 范围
+            if (page < 1) page = 1;
+            if (totalPages > 0 && page > totalPages) page = totalPages;
+            
+            const start = (page - 1) * CONFIG.PER_PAGE;
+            const end = start + CONFIG.PER_PAGE;
+            posts = filtered.slice(start, end);
+            
+        } else {
+            // API 模式：使用 getIssues 获取数据
+            // getIssues 内部已经处理了 label 过滤和分页 (slice or API param)
+            // 但我们需要在这里处理 !pull_request 过滤，这会导致每页数量不一致的问题
+            // 这是一个已知限制。
+            const data = await getIssues(page, labelFilter);
+            posts = data.filter(issue => !issue.pull_request);
+            
+            // 简单的 hasMore 判断
+            // 如果返回的数据量等于 PER_PAGE，我们假设可能还有下一页
+            // 注意：因为过滤了 PR，所以 posts.length 可能会小于 data.length
+            // 我们应该基于原始 data.length 来判断是否还有更多
+            hasMore = data.length === CONFIG.PER_PAGE;
+        }
 
         if (posts.length === 0) {
             listContainer.innerHTML = '<div class="loading">暂无文章</div>';
@@ -400,8 +505,12 @@ async function renderPostList() {
         `}).join('');
 
         listContainer.innerHTML = html;
+        
+        // 渲染分页控件
+        renderPagination(page, totalPages, hasMore);
 
     } catch (error) {
+        console.error(error);
         listContainer.innerHTML = `<div class="error">加载失败: ${error.message}</div>`;
     }
 }
