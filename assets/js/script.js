@@ -74,6 +74,62 @@ async function initDbData() {
 }
 
 /**
+ * 更新页面的 SEO 信息 (Meta 标签)
+ * @param {object} meta - Meta 信息对象
+ * @param {string} meta.title - 页面标题
+ * @param {string} meta.description - 页面描述
+ * @param {string} meta.keywords - 关键词
+ * @param {string} meta.image - 分享图片 (og:image, twitter:image)
+ */
+function updatePageSEO(meta) {
+    if (!meta) return;
+
+    // 更新标题
+    if (meta.title) {
+        document.title = meta.title;
+        // Open Graph
+        const ogTitle = document.querySelector('meta[property="og:title"]');
+        if (ogTitle) ogTitle.content = meta.title;
+        // Twitter
+        const twTitle = document.querySelector('meta[property="twitter:title"]');
+        if (twTitle) twTitle.content = meta.title;
+    }
+
+    // 更新描述
+    if (meta.description) {
+        const desc = document.querySelector('meta[name="description"]');
+        if (desc) desc.content = meta.description;
+        // Open Graph
+        const ogDesc = document.querySelector('meta[property="og:description"]');
+        if (ogDesc) ogDesc.content = meta.description;
+        // Twitter
+        const twDesc = document.querySelector('meta[property="twitter:description"]');
+        if (twDesc) twDesc.content = meta.description;
+    }
+
+    // 更新关键词
+    if (meta.keywords) {
+        const kw = document.querySelector('meta[name="keywords"]');
+        if (kw) kw.content = meta.keywords;
+    }
+
+    // 更新图片
+    if (meta.image) {
+        const ogImg = document.querySelector('meta[property="og:image"]');
+        if (ogImg) ogImg.content = meta.image;
+        const twImg = document.querySelector('meta[property="twitter:image"]');
+        if (twImg) twImg.content = meta.image;
+    }
+
+    // 更新 URL
+    const currentUrl = window.location.href;
+    const ogUrl = document.querySelector('meta[property="og:url"]');
+    if (ogUrl) ogUrl.content = currentUrl;
+    const twUrl = document.querySelector('meta[property="twitter:url"]');
+    if (twUrl) twUrl.content = currentUrl;
+}
+
+/**
  * 获取并初始化站点配置
  * 优先从 setting.json 获取
  * 获取后会更新全局 CONFIG 对象
@@ -377,6 +433,14 @@ async function renderPostDetail() {
 
         // 设置页面标题
         document.title = `${post.title} - 我的博客`;
+        
+        // 动态更新 SEO Meta
+        updatePageSEO({
+            title: `${post.title} - 我的博客`,
+            description: post.body.slice(0, 150).replace(/[#*`]/g, '') + '...', // 简略提取前150字
+            image: CONFIG.HERO_IMAGE || 'assets/images/banner.jpg', // 默认图，如果文章有图可以解析出来
+            keywords: post.labels ? post.labels.map(l => l.name).join(', ') : ''
+        });
 
         // 更新 Hero Slogan 为文章标题
         const heroSection = document.getElementById('hero-section');
@@ -390,6 +454,9 @@ async function renderPostDetail() {
             heroSlogan.textContent = post.title;
         }
 
+        const shareUrl = encodeURIComponent(window.location.href);
+        const shareTitle = encodeURIComponent(post.title);
+        
         const html = `
             <div class="post-header">
                 <h1>${post.title}</h1>
@@ -400,6 +467,28 @@ async function renderPostDetail() {
             </div>
             <div class="markdown-body">
                 ${contentHtml}
+            </div>
+            
+            <div class="share-section">
+                <h3>分享文章</h3>
+                <div class="share-buttons">
+                    <a href="https://twitter.com/intent/tweet?text=${shareTitle}&url=${shareUrl}" target="_blank" class="share-btn share-twitter" title="分享到 Twitter/X">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
+                        Twitter
+                    </a>
+                    <a href="https://service.weibo.com/share/share.php?url=${shareUrl}&title=${shareTitle}" target="_blank" class="share-btn share-weibo" title="分享到微博">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M21.05 15.65c-.24.03-.49.06-.74.06-2.5 0-4.54-2.03-4.54-4.54 0-.17.02-.34.04-.51-1.68-.53-3.13-1.63-4.04-3.16-.18-.3-.39-.62-.63-.97C9.37 3.65 6.94 1.5 4.1 1.5c-2.08 0-3.95 1.15-4.96 2.87-.99 1.69-1.04 3.79-.13 5.53.86 1.64 2.47 2.84 4.3 3.19.47 1.93 1.93 3.56 3.82 4.24 1.51.54 3.14.54 4.65.01 1.66 1.63 3.93 2.66 6.43 2.66 2.5 0 4.77-1.03 6.43-2.66 1.51.53 3.14.53 4.65-.01 1.89-.68 3.35-2.31 3.82-4.24 1.83-.35 3.44-1.55 4.3-3.19.91-1.74.86-3.84-.13-5.53-1.01-1.72-2.88-2.87-4.96-2.87-2.84 0-5.27 2.15-7.04 5.03-.24.35-.45.67-.63.97-.91 1.53-2.36 2.63-4.04 3.16z"></path></svg>
+                        微博
+                    </a>
+                    <a href="https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}" target="_blank" class="share-btn share-linkedin" title="分享到 LinkedIn">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                        LinkedIn
+                    </a>
+                    <button onclick="navigator.clipboard.writeText(window.location.href).then(()=>alert('链接已复制！'))" class="share-btn share-copy" title="复制链接">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                        复制链接
+                    </button>
+                </div>
             </div>
         `;
 
