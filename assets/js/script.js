@@ -494,6 +494,9 @@ async function renderPostDetail() {
 
         detailContainer.innerHTML = html;
 
+        // 添加代码复制按钮
+        addCodeCopyButtons();
+
     } catch (error) {
         detailContainer.innerHTML = `<div class="error">加载失败: ${error.message}</div>`;
     }
@@ -579,10 +582,67 @@ async function renderAbout() {
         `;
 
         aboutContainer.innerHTML = html;
+        
+        // 添加代码复制按钮
+        addCodeCopyButtons();
 
     } catch (error) {
         aboutContainer.innerHTML = `<div class="error">加载失败: ${error.message}</div>`;
     }
+}
+
+/**
+ * 为代码块添加复制按钮
+ */
+function addCodeCopyButtons() {
+    // 获取所有 pre 标签
+    const preBlocks = document.querySelectorAll('pre');
+
+    preBlocks.forEach(pre => {
+        // 检查是否已经被包裹在 .code-wrapper 中，避免重复添加
+        if (pre.parentNode.classList.contains('code-wrapper')) return;
+
+        // 创建 wrapper
+        const wrapper = document.createElement('div');
+        wrapper.className = 'code-wrapper';
+        
+        // 将 pre 替换为 wrapper，然后将 pre 放入 wrapper
+        // 1. 在 pre 之前插入 wrapper
+        pre.parentNode.insertBefore(wrapper, pre);
+        // 2. 将 pre 移动到 wrapper 内部
+        wrapper.appendChild(pre);
+
+        // 创建按钮
+        const button = document.createElement('button');
+        button.className = 'code-copy-btn';
+        button.textContent = '复制';
+        
+        // 点击事件
+        button.addEventListener('click', async () => {
+            // 获取代码内容
+            const code = pre.querySelector('code');
+            const text = code ? code.innerText : pre.innerText;
+
+            try {
+                await navigator.clipboard.writeText(text);
+                
+                // 复制成功反馈
+                button.textContent = '已复制!';
+                setTimeout(() => {
+                    button.textContent = '复制';
+                }, 2000);
+            } catch (err) {
+                console.error('复制失败:', err);
+                button.textContent = '失败';
+                setTimeout(() => {
+                    button.textContent = '复制';
+                }, 2000);
+            }
+        });
+
+        // 将按钮添加到 wrapper 元素中，使其相对于 wrapper 定位
+        wrapper.appendChild(button);
+    });
 }
 
 // 页面加载完成后执行

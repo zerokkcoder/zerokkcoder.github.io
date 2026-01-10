@@ -564,3 +564,41 @@ a {
         min-width: 120px;
     }
 }
+
+/* Code Block Copy Button */
+.code-wrapper {
+    position: relative;
+    margin: 1.5rem 0;
+}
+
+.code-wrapper pre {
+    margin: 0;
+    padding-top: 2.5rem; /* 为按钮留出空间，或者保持原样 */
+}
+
+.code-copy-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border);
+    color: var(--muted-foreground);
+    border-radius: var(--radius-sm);
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    opacity: 0; /* 默认隐藏 */
+    font-family: var(--font-mono);
+    z-index: 10;
+}
+
+.code-wrapper:hover .code-copy-btn {
+    opacity: 1; /* 悬浮显示 */
+}
+
+.code-copy-btn:hover {
+    background: var(--accent);
+    color: black;
+    border-color: var(--accent);
+}
