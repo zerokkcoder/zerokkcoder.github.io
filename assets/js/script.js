@@ -63,7 +63,7 @@ async function fetchWithCache(url) {
 async function initDbData() {
     try {
         // 添加时间戳防止缓存
-        const response = await fetch(`db.json?t=${Date.now()}`);
+        const response = await fetch(`data/db.json?t=${Date.now()}`);
         if (response.ok) {
             DB_DATA = await response.json();
             console.log('已加载本地 db.json 数据');
@@ -82,7 +82,7 @@ async function initSiteConfig() {
     let config = null;
     try {
         // 尝试获取本地 setting.json
-        const response = await fetch('setting.json');
+        const response = await fetch(`data/setting.json?t=${Date.now()}`);
         if (response.ok) {
             config = await response.json();
         }
@@ -145,19 +145,39 @@ async function renderHeader(config) {
         }
         heroImg.src = config.hero_image;
         heroImg.alt = "Hero Image";
+
+        // 在 Hero Section 中显示 Slogan
+        if (config.site_slogan) {
+            let heroSlogan = heroSection.querySelector('.hero-slogan');
+            if (!heroSlogan) {
+                heroSlogan = document.createElement('div');
+                heroSlogan.className = 'hero-slogan';
+                heroSection.appendChild(heroSlogan);
+            }
+            heroSlogan.textContent = config.site_slogan;
+        }
     }
 
     // 渲染导航栏标签
     const navEl = document.getElementById('nav');
     if (navEl && config.labels) {
-        // 保留首页链接
-        const homeLink = '<a href="index.html">首页</a>';
+        // 获取当前选中的 label
+        const currentLabel = new URLSearchParams(window.location.search).get('label');
         
+        // 保留首页链接
+        const homeClass = window.location.pathname.endsWith('index.html') || window.location.pathname === '/' ? (!currentLabel ? 'class="active"' : '') : '';
+        const homeLink = `<a href="index.html" ${homeClass}>首页</a>`;
+        
+        // 项目页链接
+        const projectsClass = window.location.pathname.includes('projects.html') ? 'class="active"' : '';
+        const projectsLink = `<a href="projects.html" ${projectsClass}>项目</a>`;
+
         const labelsHtml = config.labels.map(label => {
-            return `<a href="index.html?label=${encodeURIComponent(label.name)}">${label.name}</a>`;
+            const activeClass = currentLabel === label.name ? 'class="active"' : '';
+            return `<a href="index.html?label=${encodeURIComponent(label.name)}" ${activeClass}>${label.name}</a>`;
         }).join('');
 
-        navEl.innerHTML = homeLink + labelsHtml;
+        navEl.innerHTML = homeLink + projectsLink + labelsHtml;
     }
 }
 
@@ -170,27 +190,6 @@ function renderFooter(config) {
 
     let html = '';
 
-    // 渲染项目
-    if (config.projects && config.projects.length > 0) {
-        const projectsHtml = config.projects.map(project => `
-            <a href="${project.site_url}" target="_blank" class="project-card">
-                <div class="project-icon"></div>
-                <div class="project-info">
-                    <h4>${project.name}</h4>
-                    <p>${project.desc}</p>
-                </div>
-                <div class="project-arrow">→</div>
-            </a>
-        `).join('');
-
-        html += `
-            <div class="footer-section">
-                <h3 class="section-title">Projects</h3>
-                <div class="project-list">${projectsHtml}</div>
-            </div>
-        `;
-    }
-
     // 渲染社交账号
     if (config.accounts && config.accounts.length > 0) {
         const accountsHtml = config.accounts.map(account => `
@@ -202,17 +201,25 @@ function renderFooter(config) {
         
         html += `
             <div class="footer-section">
-                <h3 class="section-title">Connect</h3>
+                <h3 class="section-title">联系我</h3>
                 <div class="account-list">${accountsHtml}</div>
             </div>
         `;
     }
     
     // 版权信息
+    let copyrightYear = new Date().getFullYear();
+    if (config.start_time) {
+        const startYear = parseInt(config.start_time);
+        if (!isNaN(startYear) && startYear < copyrightYear) {
+            copyrightYear = `${startYear}-${copyrightYear}`;
+        }
+    }
+
     html += `
         <div class="copyright">
             <span class="status-indicator"></span>
-            SYSTEM ONLINE • © ${new Date().getFullYear()} ${config.username || 'My Blog'}
+            系统在线 • © ${copyrightYear} ${config.username || 'My Blog'}
         </div>
     `;
 
@@ -367,6 +374,18 @@ async function renderPostDetail() {
         // 设置页面标题
         document.title = `${post.title} - 我的博客`;
 
+        // 更新 Hero Slogan 为文章标题
+        const heroSection = document.getElementById('hero-section');
+        if (heroSection) {
+            let heroSlogan = heroSection.querySelector('.hero-slogan');
+            if (!heroSlogan) {
+                heroSlogan = document.createElement('div');
+                heroSlogan.className = 'hero-slogan';
+                heroSection.appendChild(heroSlogan);
+            }
+            heroSlogan.textContent = post.title;
+        }
+
         const html = `
             <div class="post-header">
                 <h1>${post.title}</h1>
@@ -387,6 +406,36 @@ async function renderPostDetail() {
     }
 }
 
+/**
+ * 渲染项目列表
+ */
+async function renderProjectList() {
+    const listContainer = document.getElementById('project-list');
+    if (!listContainer) return;
+
+    // 获取配置
+    const config = await initSiteConfig();
+    if (!config || !config.projects || config.projects.length === 0) {
+        listContainer.innerHTML = '<div class="loading">暂无项目</div>';
+        return;
+    }
+
+    const html = config.projects.map(project => `
+        <a href="${project.site_url}" target="_blank" class="project-card">
+            ${project.cover ? `<div class="project-cover"><img src="${project.cover}" alt="${project.name}" loading="lazy"></div>` : ''}
+            <div class="project-content">
+                <div class="project-header">
+                    <h3 class="project-title">${project.name}</h3>
+                    <div class="project-arrow">↗</div>
+                </div>
+                <p class="project-desc">${project.desc}</p>
+            </div>
+        </a>
+    `).join('');
+
+    listContainer.innerHTML = html;
+}
+
 // 页面加载完成后执行
 document.addEventListener('DOMContentLoaded', async () => {
     await initDbData(); // 尝试加载静态数据
@@ -399,5 +448,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         renderPostList();
     } else if (document.getElementById('post-detail')) {
         renderPostDetail();
+    } else if (document.getElementById('project-list')) {
+        renderProjectList();
     }
 });

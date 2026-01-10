@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 // 读取 setting.json 获取配置
-const settingPath = path.join(__dirname, 'setting.json');
+const settingPath = path.join(__dirname, '../data/setting.json');
 let config = {};
 
 try {
@@ -94,7 +94,7 @@ async function fetchAllIssues() {
     }));
 
     // 保存到 db.json
-    const dbPath = path.join(__dirname, 'db.json');
+    const dbPath = path.join(__dirname, '../data/db.json');
     fs.writeFileSync(dbPath, JSON.stringify(simplifiedIssues, null, 2), 'utf8');
     console.log(`数据已保存到 ${dbPath}`);
 }
