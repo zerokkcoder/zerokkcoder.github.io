@@ -172,12 +172,16 @@ async function renderHeader(config) {
         const projectsClass = window.location.pathname.includes('projects.html') ? 'class="active"' : '';
         const projectsLink = `<a href="projects.html" ${projectsClass}>项目</a>`;
 
+        // 关于页链接
+        const aboutClass = window.location.pathname.includes('about.html') ? 'class="active"' : '';
+        const aboutLink = `<a href="about.html" ${aboutClass}>关于</a>`;
+
         const labelsHtml = config.labels.map(label => {
             const activeClass = currentLabel === label.name ? 'class="active"' : '';
             return `<a href="index.html?label=${encodeURIComponent(label.name)}" ${activeClass}>${label.name}</a>`;
         }).join('');
 
-        navEl.innerHTML = homeLink + projectsLink + labelsHtml;
+        navEl.innerHTML = homeLink + projectsLink + aboutLink + labelsHtml;
     }
 }
 
@@ -436,6 +440,62 @@ async function renderProjectList() {
     listContainer.innerHTML = html;
 }
 
+/**
+ * 渲染关于页面
+ */
+async function renderAbout() {
+    const aboutContainer = document.getElementById('about-content');
+    if (!aboutContainer) return;
+
+    aboutContainer.innerHTML = '<div class="loading">加载中...</div>';
+
+    try {
+        const config = await initSiteConfig();
+        
+        // 获取 GitHub 用户信息
+        const userUrl = `https://api.github.com/users/${config.username}`;
+        const user = await fetchWithCache(userUrl);
+
+        // 如果配置中有关于内容（支持 Markdown），则优先显示
+        // 这里假设 setting.json 可能包含 about_markdown 字段
+        // 如果没有，则使用 GitHub Bio
+        
+        let content = '';
+        if (config.about_markdown) {
+            content = marked.parse(config.about_markdown);
+        } else if (user.bio) {
+             content = `<p class="about-bio">${user.bio}</p>`;
+        } else {
+            content = '<p>暂无介绍。</p>';
+        }
+
+        const html = `
+            <div class="about-profile">
+                <img src="${user.avatar_url}" alt="${user.name}" class="about-avatar">
+                <h2 class="about-name">${user.name || user.login}</h2>
+                <div class="about-meta">
+                    <span><a href="${user.html_url}" target="_blank">@${user.login}</a></span>
+                    ${user.location ? `<span>📍 ${user.location}</span>` : ''}
+                    ${user.blog ? `<span>🔗 <a href="${user.blog}" target="_blank">${user.blog}</a></span>` : ''}
+                </div>
+                <div class="about-stats">
+                    <div class="stat-item"><strong>${user.public_repos}</strong> Repos</div>
+                    <div class="stat-item"><strong>${user.followers}</strong> Followers</div>
+                    <div class="stat-item"><strong>${user.following}</strong> Following</div>
+                </div>
+            </div>
+            <div class="markdown-body about-body">
+                ${content}
+            </div>
+        `;
+
+        aboutContainer.innerHTML = html;
+
+    } catch (error) {
+        aboutContainer.innerHTML = `<div class="error">加载失败: ${error.message}</div>`;
+    }
+}
+
 // 页面加载完成后执行
 document.addEventListener('DOMContentLoaded', async () => {
     await initDbData(); // 尝试加载静态数据
@@ -450,5 +510,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         renderPostDetail();
     } else if (document.getElementById('project-list')) {
         renderProjectList();
+    } else if (document.getElementById('about-content')) {
+        renderAbout();
     }
 });

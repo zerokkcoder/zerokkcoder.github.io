@@ -314,6 +314,81 @@ a {
     max-width: 100%;
 }
 
+/* About Page */
+.about-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.about-profile {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.about-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    border: 3px solid var(--sidebar-bg);
+    box-shadow: 0 0 0 2px var(--border);
+}
+
+.about-name {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+    color: var(--foreground);
+}
+
+.about-meta {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--muted-foreground);
+    font-size: 0.9rem;
+}
+
+.about-meta a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.about-meta a:hover {
+    color: var(--accent);
+}
+
+.about-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 1.5rem;
+}
+
+.stat-item {
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--muted-foreground);
+}
+
+.stat-item strong {
+    display: block;
+    font-size: 1.25rem;
+    color: var(--foreground);
+    margin-bottom: 0.25rem;
+}
+
+.about-bio {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--foreground);
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
 /* Projects Page */
 .page-title {
     font-size: 1.5rem;

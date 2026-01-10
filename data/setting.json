@@ -32,5 +32,6 @@
     "username": "zerokkcoder",
     "repo_name": "zerokkcoder.github.io",
     "per_page": 10,
-    "cache_ttl": 3600000
+    "cache_ttl": 3600000,
+    "about_markdown": "### 👋 嗨，我是 zerokkcoder\n\n> \"代码是写给人看的，只是顺便给机器运行。\"\n\n这里是我的数字花园，记录技术探索、踩坑经验和生活随笔。\n\n#### 🛠️ 技术栈 & 技能\n- **前端**: Vue.js, React, TailwindCSS, 像素级还原强迫症\n- **后端**: Node.js, Python, Go, 致力于写出优雅的 API\n- **工具**: VS Code, Git, Docker, 效率工具控\n\n#### 🚀 开发理念\n我不只是在写代码，我是在**构建解决方案**。\n相信开源的力量，热衷于造轮子（虽然不一定好用），但也尊重标准。\n追求极致的用户体验和代码可读性，**注释写得比代码多**是我的常态。\n\n#### 📫 联系我\n随时欢迎技术交流、灵感碰撞，或者只是聊聊最近的数码产品。"
 }
