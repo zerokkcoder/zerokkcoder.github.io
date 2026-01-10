@@ -566,7 +566,51 @@ async function renderPostDetail() {
         const shareUrl = encodeURIComponent(window.location.href);
         const shareTitle = encodeURIComponent(post.title);
         
-        const html = `
+        // Post Navigation Calculation
+        let postNavHtml = '';
+        if (DB_DATA) {
+            const posts = DB_DATA.filter(i => !i.pull_request);
+            const currentIndex = posts.findIndex(p => p.number == id);
+            
+            if (currentIndex !== -1) {
+                const prevPost = posts[currentIndex - 1]; // Newer (Index - 1)
+                const nextPost = posts[currentIndex + 1]; // Older (Index + 1)
+                
+                if (prevPost || nextPost) {
+                    postNavHtml += '<div class="post-nav">';
+                    
+                    // Previous (Newer)
+                    if (prevPost) {
+                        postNavHtml += `
+                            <a href="post.html?id=${prevPost.number}" class="post-nav-item post-nav-prev">
+                                <span class="post-nav-label">&larr; 上一篇</span>
+                                <span class="post-nav-title">${prevPost.title}</span>
+                            </a>
+                        `;
+                    } else {
+                        // Placeholder to maintain spacing
+                        postNavHtml += `<div class="post-nav-item" style="visibility: hidden; border: none; background: transparent;"></div>`;
+                    }
+                    
+                    // Next (Older)
+                    if (nextPost) {
+                        postNavHtml += `
+                            <a href="post.html?id=${nextPost.number}" class="post-nav-item post-nav-next">
+                                <span class="post-nav-label">下一篇 &rarr;</span>
+                                <span class="post-nav-title">${nextPost.title}</span>
+                            </a>
+                        `;
+                    } else {
+                        // Placeholder to maintain spacing
+                        postNavHtml += `<div class="post-nav-item" style="visibility: hidden; border: none; background: transparent;"></div>`;
+                    }
+                    
+                    postNavHtml += '</div>';
+                }
+            }
+        }
+
+        let html = `
             <div class="post-header">
                 <h1>${post.title}</h1>
                 <div class="post-meta">
@@ -574,34 +618,48 @@ async function renderPostDetail() {
                     <span><a href="${post.html_url}" target="_blank" style="color: inherit; text-decoration: none;">${post.user.login}</a></span>
                 </div>
             </div>
-            <div class="markdown-body">
-                ${contentHtml}
-            </div>
             
-            <div class="share-section">
-                <h3>分享文章</h3>
-                <div class="share-buttons">
-                    <a href="https://twitter.com/intent/tweet?text=${shareTitle}&url=${shareUrl}" target="_blank" class="share-btn share-twitter" title="分享到 Twitter/X">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
-                        Twitter
-                    </a>
-                    <a href="https://service.weibo.com/share/share.php?url=${shareUrl}&title=${shareTitle}" target="_blank" class="share-btn share-weibo" title="分享到微博">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M21.05 15.65c-.24.03-.49.06-.74.06-2.5 0-4.54-2.03-4.54-4.54 0-.17.02-.34.04-.51-1.68-.53-3.13-1.63-4.04-3.16-.18-.3-.39-.62-.63-.97C9.37 3.65 6.94 1.5 4.1 1.5c-2.08 0-3.95 1.15-4.96 2.87-.99 1.69-1.04 3.79-.13 5.53.86 1.64 2.47 2.84 4.3 3.19.47 1.93 1.93 3.56 3.82 4.24 1.51.54 3.14.54 4.65.01 1.66 1.63 3.93 2.66 6.43 2.66 2.5 0 4.77-1.03 6.43-2.66 1.51.53 3.14.53 4.65-.01 1.89-.68 3.35-2.31 3.82-4.24 1.83-.35 3.44-1.55 4.3-3.19.91-1.74.86-3.84-.13-5.53-1.01-1.72-2.88-2.87-4.96-2.87-2.84 0-5.27 2.15-7.04 5.03-.24.35-.45.67-.63.97-.91 1.53-2.36 2.63-4.04 3.16z"></path></svg>
-                        微博
-                    </a>
-                    <a href="https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}" target="_blank" class="share-btn share-linkedin" title="分享到 LinkedIn">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                        LinkedIn
-                    </a>
-                    <button onclick="navigator.clipboard.writeText(window.location.href).then(()=>alert('链接已复制！'))" class="share-btn share-copy" title="复制链接">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
-                        复制链接
-                    </button>
+            <div class="post-layout">
+                <div class="post-main">
+                    <div class="markdown-body">
+                        ${contentHtml}
+                    </div>
+                    
+                    <div class="share-section">
+                        <h3>分享文章</h3>
+                        <div class="share-buttons">
+                            <a href="https://twitter.com/intent/tweet?text=${shareTitle}&url=${shareUrl}" target="_blank" class="share-btn share-twitter" title="分享到 Twitter/X">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
+                                Twitter
+                            </a>
+                            <a href="https://service.weibo.com/share/share.php?url=${shareUrl}&title=${shareTitle}" target="_blank" class="share-btn share-weibo" title="分享到微博">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M21.05 15.65c-.24.03-.49.06-.74.06-2.5 0-4.54-2.03-4.54-4.54 0-.17.02-.34.04-.51-1.68-.53-3.13-1.63-4.04-3.16-.18-.3-.39-.62-.63-.97C9.37 3.65 6.94 1.5 4.1 1.5c-2.08 0-3.95 1.15-4.96 2.87-.99 1.69-1.04 3.79-.13 5.53.86 1.64 2.47 2.84 4.3 3.19.47 1.93 1.93 3.56 3.82 4.24 1.51.54 3.14.54 4.65.01 1.66 1.63 3.93 2.66 6.43 2.66 2.5 0 4.77-1.03 6.43-2.66 1.51.53 3.14.53 4.65-.01 1.89-.68 3.35-2.31 3.82-4.24 1.83-.35 3.44-1.55 4.3-3.19.91-1.74.86-3.84-.13-5.53-1.01-1.72-2.88-2.87-4.96-2.87-2.84 0-5.27 2.15-7.04 5.03-.24.35-.45.67-.63.97-.91 1.53-2.36 2.63-4.04 3.16z"></path></svg>
+                                微博
+                            </a>
+                            <a href="https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}" target="_blank" class="share-btn share-linkedin" title="分享到 LinkedIn">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                                LinkedIn
+                            </a>
+                            <button onclick="navigator.clipboard.writeText(window.location.href).then(()=>alert('链接已复制！'))" class="share-btn share-copy" title="复制链接">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                                复制链接
+                            </button>
+                        </div>
+                    </div>
+                    
+                    ${postNavHtml}
+                </div>
+                
+                <div class="post-sidebar">
+                    <div id="toc-container" class="toc-container"></div>
                 </div>
             </div>
         `;
 
         detailContainer.innerHTML = html;
+
+        // 生成目录
+        generateTOC();
 
         // 添加代码复制按钮
         addCodeCopyButtons();
@@ -752,6 +810,47 @@ function addCodeCopyButtons() {
         // 将按钮添加到 wrapper 元素中，使其相对于 wrapper 定位
         wrapper.appendChild(button);
     });
+}
+
+/**
+ * 生成文章目录
+ */
+function generateTOC() {
+    const tocContainer = document.getElementById('toc-container');
+    if (!tocContainer) return;
+
+    const content = document.querySelector('.markdown-body');
+    if (!content) return;
+
+    // 查找所有标题 (h1-h4)，通常文章标题是 h1，正文从 h2 开始
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+    // 如果没有标题或者只有文章本身的 h1 (通常在 markdown-body 外部，但这里检查内部)，则不显示
+    // 我们的 markdown-body 内部通常包含文章内容的标题
+    if (headers.length === 0) {
+        tocContainer.style.display = 'none';
+        return;
+    }
+
+    let tocHtml = '<div class="toc-header">目录</div><ul class="toc-list">';
+    
+    headers.forEach((header, index) => {
+        // 确保标题有 ID
+        if (!header.id) {
+            header.id = 'heading-' + index;
+        }
+
+        const level = parseInt(header.tagName.substring(1));
+        const text = header.innerText;
+        
+        tocHtml += `
+            <li class="toc-item toc-level-${level}">
+                <a href="#${header.id}" class="toc-link" title="${text}">${text}</a>
+            </li>
+        `;
+    });
+
+    tocHtml += '</ul>';
+    tocContainer.innerHTML = tocHtml;
 }
 
 // 页面加载完成后执行
