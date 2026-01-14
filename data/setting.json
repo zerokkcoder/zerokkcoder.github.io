@@ -22,6 +22,12 @@
             "site_url": "https://xuehaoke.top",
             "cover": "assets/images/xuehaoke_top.png",
             "desc": "学好课，卷王必备的资源平台"
+        },
+        {
+            "name": "Eyes Recover",
+            "site_url": "https://eyes-recover-mdb9o9ach-yellowstarts-projects.vercel.app/",
+            "cover": "assets/images/eyes_recover_zh.png",
+            "desc": "Eyes Recover 是一个基于科学循证的视力恢复训练平台，旨在通过互动练习帮助缓解数码眼疲劳、集合不足（CI）及辅助弱视感知学习。"
         }
     ],
     "labels": [

@@ -373,7 +373,7 @@ a {
 }
 
 /* Project List */
-.project-list {
+.project-grid {
     display: flex;
     flex-wrap: wrap;
     gap: 1.5rem;
@@ -449,6 +449,12 @@ a {
     color: var(--muted-foreground);
     font-size: 0.9375rem;
     line-height: 1.6;
+    height: calc(1.6em * 3); /* 强制固定高度为3行 */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 /* Code Block Styles */
