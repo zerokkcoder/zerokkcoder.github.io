@@ -863,6 +863,112 @@ function generateTOC() {
     tocContainer.innerHTML = tocHtml;
 }
 
+/**
+ * 吉他音频引擎 (Karplus-Strong 算法模拟)
+ * 用于支持文章中的交互式吉他指板试听
+ * 点击带有 data-string="1-6" [data-fret="0-20"] 的元素即可发声
+ */
+const GuitarAudio = {
+    ctx: null,
+    masterGain: null,
+
+    init() {
+        if (!this.ctx) {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            this.ctx = new AudioContext();
+            this.masterGain = this.ctx.createGain();
+            // 适当降低音量
+            this.masterGain.gain.value = 0.4;
+            this.masterGain.connect(this.ctx.destination);
+        }
+        if (this.ctx.state === 'suspended') {
+            this.ctx.resume();
+        }
+    },
+
+    // 标准调弦频率 (从 6 弦到 1 弦: E2, A2, D3, G3, B3, E4)
+    baseFrequencies: [82.41, 110.00, 146.83, 196.00, 246.94, 329.63],
+
+    /**
+     * 播放吉他音符
+     * @param {number} stringIndex - 弦序号 (1-6, 1为最细弦/高音E)
+     * @param {number} fret - 品格号 (0为空弦)
+     */
+    play(stringIndex, fret = 0) {
+        this.init();
+
+        // 映射弦序号到频率数组索引
+        // 数组顺序是 E2, A2, D3, G3, B3, E4 (0-5)
+        // 弦序号 1 (High E) -> index 5
+        // 弦序号 6 (Low E) -> index 0
+        const stringMap = [5, 4, 3, 2, 1, 0];
+        
+        if (stringIndex < 1 || stringIndex > 6) {
+            console.warn('Invalid string index:', stringIndex);
+            return;
+        }
+
+        const baseFreq = this.baseFrequencies[stringMap[stringIndex - 1]];
+        // 计算频率: f = f0 * 2^(n/12)
+        const frequency = baseFreq * Math.pow(2, fret / 12);
+        
+        this.strum(frequency);
+    },
+
+    /**
+     * 使用 Karplus-Strong 算法合成拨弦声音
+     */
+    strum(frequency) {
+        const sampleRate = this.ctx.sampleRate;
+        const lengthInSeconds = 2.0;
+        // 周期长度 (Delay Line Length)
+        const N = Math.round(sampleRate / frequency);
+        
+        const buffer = this.ctx.createBuffer(1, sampleRate * lengthInSeconds, sampleRate);
+        const data = buffer.getChannelData(0);
+        
+        // 1. 初始化噪声爆发 (Excitation)
+        // 仅填充前 N 个采样点，模拟拨弦瞬间的宽频噪声
+        for (let i = 0; i < N; i++) {
+            data[i] = (Math.random() * 2 - 1);
+        }
+        
+        // 2. 反馈循环 (Feedback Loop)
+        // 衰减系数 (Decay factor)
+        // 民谣吉他钢弦衰减较慢，接近 1
+        // 频率越高，衰减稍快以模拟真实物理特性
+        let alpha = 0.993;
+        if (frequency > 300) alpha = 0.990;
+        
+        // Karplus-Strong 核心算法: y[n] = alpha * 0.5 * (y[n-N] + y[n-N-1])
+        for (let i = N; i < data.length; i++) {
+            // 低通滤波 (平均当前和前一个延迟样本)
+            const val = 0.5 * (data[i - N] + data[i - N - 1]);
+            data[i] = val * alpha;
+        }
+
+        const source = this.ctx.createBufferSource();
+        source.buffer = buffer;
+        source.connect(this.masterGain);
+        source.start();
+    }
+};
+
+// 全局监听吉他交互事件
+document.addEventListener('click', (e) => {
+    // 检查是否有 data-string 属性的元素被点击 (支持 .guitar-dot 等任意元素)
+    const target = e.target.closest('[data-string]');
+    if (target) {
+        const string = parseInt(target.dataset.string);
+        // 如果没有 data-fret，默认为 0 (空弦)
+        const fret = parseInt(target.dataset.fret || '0');
+        
+        if (!isNaN(string)) {
+            GuitarAudio.play(string, fret);
+        }
+    }
+});
+
 // 页面加载完成后执行
 document.addEventListener('DOMContentLoaded', async () => {
     await initDbData(); // 尝试加载静态数据
