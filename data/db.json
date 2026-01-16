@@ -1,5 +1,26 @@
 [
   {
+    "id": 3820053086,
+    "number": 4,
+    "title": "开源股票行情看板：OpenStock",
+    "body": "<img width=\"680\" height=\"361\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/64a45f9f-cbc6-4985-bed6-09bc2aad239a\" />\n\n推荐一个完全免费的开源股票行情看板：OpenStock，自选股+提醒一把梭。\n不想天天盯盘的人，设好关注和触发条件就行。\n内置 TradingView 图表，数据接 Finnhub，跟踪和复盘都够用。\n\n- 平台覆盖：网页端直接用；也支持本地/Docker 自部署\n- GitHub：[http://github.com/Open-Dev-Society/OpenStock](https://t.co/0VZKJcfAKB)\n- 网站地址：[https://openstock-ods.vercel.app](https://t.co/67oVMX46BB)\n\n自选股列表一屏看关键价格/涨跌幅，信息密度很高。\n价格到点自动提醒，少刷软件也不怕错过。\nTradingView 交互图表，切周期/指标很顺手。\n市场概览+公司信息页，做功课比截图记笔记舒服。",
+    "created_at": "2026-01-16T02:51:30Z",
+    "updated_at": "2026-01-16T02:51:30Z",
+    "html_url": "https://github.com/zerokkcoder/zerokkcoder.github.io/issues/4",
+    "labels": [
+      {
+        "id": 10002817947,
+        "name": "开源",
+        "color": "aaaaaa"
+      }
+    ],
+    "user": {
+      "login": "zerokkcoder",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9574282?v=4",
+      "html_url": "https://github.com/zerokkcoder"
+    }
+  },
+  {
     "id": 3795998670,
     "number": 3,
     "title": "代码与烟火之间",
