@@ -201,6 +201,14 @@ a {
     filter: grayscale(0);
 }
 
+.wx-gzh-img {
+    width: 100%;
+    max-width: 200px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    display: block;
+}
+
 .copyright {
     font-family: var(--font-mono);
     font-size: 0.75rem;

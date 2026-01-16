@@ -250,6 +250,16 @@ function renderFooter(config) {
 
     let html = '';
 
+    // 渲染微信公众号
+    if (config.wx_gzh) {
+        html += `
+            <div class="footer-section">
+                <h3 class="section-title">关注公众号</h3>
+                <img src="${config.wx_gzh}" alt="微信公众号" class="wx-gzh-img">
+            </div>
+        `;
+    }
+
     // 渲染社交账号
     if (config.accounts && config.accounts.length > 0) {
         const accountsHtml = config.accounts.map(account => `

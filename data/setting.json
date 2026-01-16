@@ -3,6 +3,7 @@
     "site_logo": "assets/images/logo.png",
     "site_slogan": "注释两行字，后人少掉发",
     "hero_image": "assets/images/banner.jpg",
+    "wx_gzh": "assets/images/wx_gzh.png",
     "start_time": "2026年01月09日",
     "accounts": [
         {
@@ -32,7 +33,7 @@
     ],
     "labels": [
         { "name": "技术", "value": "Technical" },
-        { "name": "生活", "value": "Life" },
+        { "name": "开源", "value": "OpenSource" },
         { "name": "随笔", "value": "Essay" }
     ],
     "username": "zerokkcoder",
